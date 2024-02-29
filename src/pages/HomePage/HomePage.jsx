@@ -1,9 +1,10 @@
-import './HomePage.css';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { getBestMoviesApi } from '../../api/moviesApi';
-import { useState, useEffect } from 'react';
+import './HomePage.css';
 
 const HomePage = () => {
-  const [movies, setMovies] = useState(null);
+  const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -12,45 +13,37 @@ const HomePage = () => {
       try {
         setLoading(true);
         setError('');
-        const data = await getBestMoviesApi();
-        setMovies(data);
+        const response = await getBestMoviesApi();
+        setMovies(response.data.results);
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
-  const renderMoviesList = () => {
-    if (loading) {
-      return <p>Loading...</p>;
-    } else if (error) {
-      return <p>Error: {error}</p>;
-    } else if (movies && movies.data) {
-      return (
-        <ol className="movies-list">
-          {movies.data.results.map(movie => (
-            <li key={movie.id}>
-              <a
-                href={`https://www.themoviedb.org/movie/${movie.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="movie-link"
-              >
-                {movie.title}
-              </a>
-            </li>
-          ))}
-        </ol>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  return <div className="home-page">{renderMoviesList()}</div>;
+  return (
+    <div className="home-page">
+      <h1 className="movies-page-title">Popular Movies</h1>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
+      <ul className="movies-list">
+        {movies.map(movie => (
+          <li className="movie-link" key={movie.id}>
+            <Link
+              className="movie-link"
+              to={{ pathname: `/movies/${movie.id}`, state: { from: '/' } }}
+            >
+              {movie.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default HomePage;
