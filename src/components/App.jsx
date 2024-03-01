@@ -6,20 +6,18 @@ import Header from '../partials/Header/Header';
 import Footer from '../partials/Footer/Footer';
 
 const App = () => {
-  const handleGoBack = () => {
-    console.log('Go back to previous page');
-  };
-
   return (
     <div>
-      <Header />
       <Routes>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/movies" element={<MoviesPage />} />
-        <Route
-          path="/movies/:movieId"
-          element={<MovieDetailsPage goBack={handleGoBack} />}
-        />
+        <Route path="/" element={<Header />}>
+          <Route index element={<HomePage />} />
+          <Route path="movies" element={<MoviesPage />} />
+          <Route path="movies/:movieId" element={<MovieDetailsPage />}>
+            <Route path ="cast" element={<p>Cast</p>} />
+            <Route path ="reviews" element={<p>Reviews</p>} />
+          </Route>
+        </Route>
+        
       </Routes>
       <Footer />
     </div>

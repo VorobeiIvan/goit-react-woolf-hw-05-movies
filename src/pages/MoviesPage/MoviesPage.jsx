@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { getSearchMoviesApi } from '../../api/moviesApi';
 import './MoviesPage.css';
+import MoviesList from 'components/MoviesList';
 
 const MoviesPage = () => {
   const [inputValue, setInputValue] = useState('');
@@ -11,17 +12,18 @@ const MoviesPage = () => {
   const [searchBtnDisabled, setSearchBtnDisabled] = useState(true);
   const [resetBtnDisabled, setResetBtnDisabled] = useState(true);
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParam();
 
-  useEffect(() => {
-    setError('Enter your query.');
-    if (
-      location.pathname === '/movies' &&
-      location.search === '' &&
-      inputValue === ''
-    ) {
-      setMovies([]);
-    }
-  }, [location.pathname, location.search, inputValue]);
+  // useEffect(() => {
+  //   setError('Enter your query.');
+  //   if (
+  //     location.pathname === '/movies' &&
+  //     location.search === '' &&
+  //     inputValue === ''
+  //   ) {
+  //     setMovies([]);
+  //   }
+  // }, [location.pathname, location.search, inputValue]);
 
   const handleInput = e => {
     const value = e.target.value;
@@ -106,20 +108,7 @@ const MoviesPage = () => {
         <p className="no-results-message massage">No movies found.</p>
       )}
       {!loading && !error && movies.length > 0 && (
-        <ul className="movies-list">
-          {movies.map(movie => (
-            <li key={movie.id}>
-              <Link
-                to={{
-                  pathname: `/movies/${movie.id}`,
-                  search: inputValue ? `?query=${inputValue.trim()}` : '',
-                }}
-              >
-                {movie.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <ul className="movies-list">{MoviesList(movies)}</ul>
       )}
     </div>
   );
