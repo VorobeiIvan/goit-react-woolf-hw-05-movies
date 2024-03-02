@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchForm from '../../components/SearchForm/SearchForm';
 import MoviesList from '../../components/MoviesList';
 import { getSearchMoviesApi } from '../../api/moviesApi';
@@ -8,16 +8,15 @@ const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get('query');
-
     if (query) {
       fetchMovies(query);
     }
-  }, [location.search]);
+  }, [searchParams]);
 
   const fetchMovies = async query => {
     setLoading(true);
@@ -40,16 +39,14 @@ const MoviesPage = () => {
   };
 
   const handleSearch = query => {
-    const searchParams = new URLSearchParams();
-    searchParams.set('query', query);
-    window.history.pushState({}, '', `?${searchParams.toString()}`);
+    setSearchParams({ query });
     fetchMovies(query);
   };
 
   const handleReset = () => {
-    const searchParams = new URLSearchParams();
-    window.history.pushState({}, '', `?${searchParams.toString()}`);
-    window.location.reload();
+    setSearchParams({});
+    setMovies([]);
+    navigate('/movies');
   };
 
   return (
@@ -57,7 +54,7 @@ const MoviesPage = () => {
       <h1 className="movies-page-title">Movies search</h1>
       <SearchForm onSubmit={handleSearch} onReset={handleReset} />
       {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
+      {error && <p className="massage">Error: {error}</p>}
       {!loading && !error && movies.length === 0 && (
         <p className="massage">No movies found.</p>
       )}

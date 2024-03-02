@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 
 const Reviews = () => {
   const { movieId } = useParams();
-
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -27,6 +26,9 @@ const Reviews = () => {
     fetchReviews();
   }, [movieId]);
 
+  const defaultImg =
+    'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
+
   return (
     <div className="reviews-container">
       <h3 className="reviews-title">Reviews</h3>
@@ -41,6 +43,13 @@ const Reviews = () => {
               <img
                 className="review-author-avatar"
                 src={`https://image.tmdb.org/t/p/w500${review.author_details.avatar_path}`}
+                alt={review.author}
+              />
+            )}
+            {!review.author_details.avatar_path && (
+              <img
+                className="review-author-avatar"
+                src={defaultImg}
                 alt={review.author}
               />
             )}

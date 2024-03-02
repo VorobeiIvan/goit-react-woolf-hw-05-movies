@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getMovieCreditsApi } from '../../api/moviesApi';
 import './Cast.css';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const Cast = () => {
-  const location = useLocation();
-  const movieId = location.pathname.split('/')[2];
-
+  const { movieId } = useParams();
   const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -28,6 +26,9 @@ const Cast = () => {
     fetchCast();
   }, [movieId]);
 
+  const defaultImg =
+    'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
+
   return (
     <div className="cast-container">
       <h3 className="cast-title">Cast</h3>
@@ -42,6 +43,9 @@ const Cast = () => {
                 src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
                 alt={actor.name}
               />
+            )}
+            {!actor.profile_path && (
+              <img className="cast-image" src={defaultImg} alt={actor.name} />
             )}
             {actor.name}
           </li>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { getMovieDetailsApi } from '../../api/moviesApi';
 import './MovieDetailsPage.css';
 import MovieDetails from 'components/MovieDetails';
@@ -31,21 +31,24 @@ const MovieDetailsPage = () => {
 
   const handleGoBack = () => {
     if (location.state && location.state.from) {
-      navigate(location.state.from);
+      navigate(location.state?.from || '/');
     } else {
       navigate(-1);
     }
   };
 
   return (
-    <div className="movie-details-page">
-      <MovieDetails
-        movieDetails={movieDetails}
-        loading={loading}
-        error={error}
-        handleGoBack={handleGoBack}
-      />
-    </div>
+    <>
+      <div className="movie-details-page">
+        <MovieDetails
+          movieDetails={movieDetails}
+          loading={loading}
+          error={error}
+          handleGoBack={handleGoBack}
+        />
+      </div>
+      <Outlet />
+    </>
   );
 };
 

@@ -29,6 +29,9 @@ const MovieDetails = ({ handleGoBack }) => {
     fetchMovieDetails();
   }, [movieId]);
 
+  const defaultImg =
+    'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
+
   const handleCastClick = () => {
     setShowCast(!showCast);
     setShowReviews(false);
@@ -59,6 +62,13 @@ const MovieDetails = ({ handleGoBack }) => {
             <img
               className="movie-details-image"
               src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
+              alt={movieDetails.title}
+            />
+          )}
+          {!movieDetails.poster_path && (
+            <img
+              className="movie-details-image"
+              src={defaultImg}
               alt={movieDetails.title}
             />
           )}
