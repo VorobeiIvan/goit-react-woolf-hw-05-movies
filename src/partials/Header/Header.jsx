@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import '../Header/Header.css';
 
 const Header = () => {
@@ -12,7 +12,6 @@ const Header = () => {
           Movies
         </NavLink>
       </nav>
-      <Outlet />
     </header>
   );
 };
