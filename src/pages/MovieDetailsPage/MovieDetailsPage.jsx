@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation, useNavigate, Outlet } from 'react-router-dom';
+import {
+  useParams,
+  useLocation,
+  useNavigate,
+  Outlet,
+  Link,
+} from 'react-router-dom';
 import { getMovieDetailsApi } from '../../api/moviesApi';
 import './MovieDetailsPage.css';
-import MovieDetails from 'components/MovieDetails';
+import MovieDetails from '../../components/MovieDetails';
+import Cast from '../../components/Cast/Cast';
+import Reviews from '../../components/Reviews/Reviews';
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -11,6 +19,8 @@ const MovieDetailsPage = () => {
   const [error, setError] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
+  const [showCast, setShowCast] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -37,18 +47,43 @@ const MovieDetailsPage = () => {
     }
   };
 
+  const handleCastClick = () => {
+    setShowCast(!showCast);
+    setShowReviews(false);
+  };
+
+  const handleReviewsClick = () => {
+    setShowReviews(!showReviews);
+    setShowCast(false);
+  };
+
   return (
-    <>
-      <div className="movie-details-page">
-        <MovieDetails
-          movieDetails={movieDetails}
-          loading={loading}
-          error={error}
-          handleGoBack={handleGoBack}
-        />
-      </div>
-      <Outlet />
-    </>
+    <div className="movie-details-page">
+      <button className="go-back-button" onClick={handleGoBack}>
+        Go Back
+      </button>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
+      {movieDetails && (
+        <div className="movie-details-container">
+          <MovieDetails
+            movieDetails={movieDetails}
+            loading={loading}
+            error={error}
+            handleGoBack={handleGoBack}
+          />
+          <Link className="cast-button" onClick={handleCastClick}>
+            {showCast ? 'Hide Cast' : 'Show Cast'}
+          </Link>
+          {showCast && <Cast movieId={movieId} />}
+          <Link className="reviews-button" onClick={handleReviewsClick}>
+            {showReviews ? 'Hide Reviews' : 'Show Reviews'}
+          </Link>
+          {showReviews && <Reviews movieId={movieId} />}
+          <Outlet />
+        </div>
+      )}
+    </div>
   );
 };
 

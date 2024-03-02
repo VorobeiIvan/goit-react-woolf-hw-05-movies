@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieDetailsApi } from '../api/moviesApi';
-import Cast from './Cast/Cast';
-import Reviews from './Reviews/Reviews';
 
 const MovieDetails = ({ handleGoBack }) => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [showCast, setShowCast] = useState(false);
-  const [showReviews, setShowReviews] = useState(false);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -32,21 +28,8 @@ const MovieDetails = ({ handleGoBack }) => {
   const defaultImg =
     'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
 
-  const handleCastClick = () => {
-    setShowCast(!showCast);
-    setShowReviews(false);
-  };
-
-  const handleReviewsClick = () => {
-    setShowReviews(!showReviews);
-    setShowCast(false);
-  };
-
   return (
     <div className="movie-details-page">
-      <button className="go-back-button" onClick={handleGoBack}>
-        Go Back
-      </button>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {movieDetails && (
@@ -107,14 +90,6 @@ const MovieDetails = ({ handleGoBack }) => {
           </p>
         </div>
       )}
-      <button className="cast-button" onClick={handleCastClick}>
-        {showCast ? 'Hide Cast' : 'Show Cast'}
-      </button>
-      {showCast && <Cast movieId={movieId} />}
-      <button className="reviews-button" onClick={handleReviewsClick}>
-        {showReviews ? 'Hide Reviews' : 'Show Reviews'}
-      </button>
-      {showReviews && <Reviews movieId={movieId} />}
     </div>
   );
 };
