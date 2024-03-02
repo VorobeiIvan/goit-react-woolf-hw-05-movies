@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getBestMoviesApi } from '../../api/moviesApi';
 import './HomePage.css';
-import MoviesList from 'components/Movieslist';
+import MoviesList from '../../components/Movieslist';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);

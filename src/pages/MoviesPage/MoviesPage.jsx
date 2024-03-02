@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { getSearchMoviesApi } from '../../api/moviesApi';
 import './MoviesPage.css';
 import SearchForm from '../../components/SearchForm';
-import MoviesList from 'components/Movieslist';
+import MoviesList from '../../components/Movieslist';
 
 const MoviesPage = () => {
   const [inputValue, setInputValue] = useState('');
