@@ -1,9 +1,12 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import '../Header/Header.css';
-import useNavigation from '../../hooks/useNavigation';
 
 const Header = () => {
-  const { goTo } = useNavigation();
+  const navigate = useNavigate();
+
+  const goTo = path => {
+    navigate(path);
+  };
 
   return (
     <header className="header">

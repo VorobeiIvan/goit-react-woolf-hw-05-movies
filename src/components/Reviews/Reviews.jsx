@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getMovieReviewsApi } from '../../api/moviesApi';
 import './Reviews.css';
-import useLocation from '../../hooks/useLocation';
+import { useParams } from 'react-router-dom';
 
 const Reviews = () => {
-  const location = useLocation();
-  const movieId = location.pathname.split('/')[2];
+  const { movieId } = useParams();
 
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);

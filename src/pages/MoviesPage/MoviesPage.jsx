@@ -1,89 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import { getSearchMoviesApi } from '../../api/moviesApi';
-import './MoviesPage.css';
-import SearchForm from '../../components/SearchForm';
+import { useLocation, useNavigate } from 'react-router-dom';
+import SearchForm from '../../components/SearchForm/SearchForm';
 import MoviesList from '../../components/MoviesList';
-import useLocation from '../../hooks/useLocation';
+import { getSearchMoviesApi } from '../../api/moviesApi';
 
 const MoviesPage = () => {
-  const [inputValue, setInputValue] = useState('');
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [searchBtnDisabled, setSearchBtnDisabled] = useState(true);
-  const [resetBtnDisabled, setResetBtnDisabled] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setError('Enter your query.');
-    if (
-      location.pathname === '/movies' &&
-      location.search === '' &&
-      inputValue === ''
-    ) {
-      setMovies([]);
-    }
-  }, [location.pathname, location.search, inputValue]);
+    const searchParams = new URLSearchParams(location.search);
+    const query = searchParams.get('query');
 
-  const handleInput = e => {
-    const value = e.target.value;
-    setInputValue(value);
+    if (query) {
+      fetchMovies(query);
+    }
+  }, [location.search]);
+
+  const fetchMovies = async query => {
+    setLoading(true);
     setError('');
-    if (value.trim() !== '') {
-      setSearchBtnDisabled(false);
-      setResetBtnDisabled(false);
-    } else {
-      setSearchBtnDisabled(true);
-      setResetBtnDisabled(true);
-    }
-  };
-
-  const handleSearch = async () => {
-    if (inputValue.trim() !== '') {
-      setLoading(true);
-      try {
-        const response = await getSearchMoviesApi(inputValue.trim());
-        if (response.data.results.length === 0) {
-          setError('No movies found.');
-          setMovies([]);
-        } else {
-          setMovies(response.data.results);
-          setError('');
-        }
-      } catch (error) {
-        console.error('Error fetching movies:', error);
-        setError('An error occurred while fetching movies.');
-      } finally {
-        setLoading(false);
+    try {
+      const response = await getSearchMoviesApi(query);
+      if (response.data.results.length === 0) {
+        setError('No movies found.');
+        setMovies([]);
+      } else {
+        setMovies(response.data.results);
+        setError('');
       }
-    } else {
-      setError('Please enter a valid search query.');
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+      setError('An error occurred while fetching movies.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleReset = () => {
-    setInputValue('');
-    setMovies([]);
-    setError('Enter your query.');
-    setSearchBtnDisabled(true);
-    setResetBtnDisabled(true);
+  const handleSearch = query => {
+    navigate(`?query=${query}`);
   };
 
   return (
-    <div>
+    <div className="movies-page">
       <h1 className="movies-page-title">Movies search</h1>
-      <SearchForm
-        inputValue={inputValue}
-        onInput={handleInput}
-        onSearch={handleSearch}
-        onReset={handleReset}
-        searchBtnDisabled={searchBtnDisabled}
-        resetBtnDisabled={resetBtnDisabled}
-      />
+      <SearchForm onSubmit={handleSearch} />
       {loading && <p>Loading...</p>}
-      {error && <p className="error-message massage">{error}</p>}
+      {error && <p>Error: {error}</p>}
       {!loading && !error && movies.length === 0 && (
-        <p className="no-results-message massage">No movies found.</p>
+        <p className="massage">No movies found.</p>
       )}
       {!loading && !error && movies.length > 0 && (
         <MoviesList movies={movies} />

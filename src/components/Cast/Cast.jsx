@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getMovieCreditsApi } from '../../api/moviesApi';
 import './Cast.css';
-import useLocation from '../../hooks/useLocation';
+import { useLocation } from 'react-router-dom';
 
 const Cast = () => {
   const location = useLocation();
