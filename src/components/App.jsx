@@ -1,12 +1,4 @@
-import {
-  Routes,
-  Route,
-  NavLink,
-  useSearchParams,
-  useNavigation,
-  useLocation,
-} from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Header from '../partials/Header/Header';
 import Footer from '../partials/Footer/Footer';
 import HomePage from '../pages/HomePage/HomePage';

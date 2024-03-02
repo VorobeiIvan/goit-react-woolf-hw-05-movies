@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getMovieCreditsApi } from '../../api/moviesApi';
 import './Cast.css';
-const Cast = ({ movieId }) => {
+import useLocation from '../../hooks/useLocation';
+
+const Cast = () => {
+  const location = useLocation();
+  const movieId = location.pathname.split('/')[2];
+
   const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

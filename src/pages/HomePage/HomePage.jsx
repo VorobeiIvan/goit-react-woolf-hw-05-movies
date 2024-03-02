@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getBestMoviesApi } from '../../api/moviesApi';
-import { useSearchParams } from 'react-router-dom';
 import './HomePage.css';
 import MoviesList from '../../components/MoviesList';
+import useSearchParams from '../../hooks/useSearchParams';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
