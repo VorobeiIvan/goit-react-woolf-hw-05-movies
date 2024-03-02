@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { getSearchMoviesApi } from '../../api/moviesApi';
 import './MoviesPage.css';
-import MoviesList from 'components/MoviesList';
+import SearchForm from 'components/SearchForm';
+import MoviesList from 'components/Movieslist';
 
 const MoviesPage = () => {
   const [inputValue, setInputValue] = useState('');
@@ -12,18 +13,17 @@ const MoviesPage = () => {
   const [searchBtnDisabled, setSearchBtnDisabled] = useState(true);
   const [resetBtnDisabled, setResetBtnDisabled] = useState(true);
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParam();
 
-  // useEffect(() => {
-  //   setError('Enter your query.');
-  //   if (
-  //     location.pathname === '/movies' &&
-  //     location.search === '' &&
-  //     inputValue === ''
-  //   ) {
-  //     setMovies([]);
-  //   }
-  // }, [location.pathname, location.search, inputValue]);
+  useEffect(() => {
+    setError('Enter your query.');
+    if (
+      location.pathname === '/movies' &&
+      location.search === '' &&
+      inputValue === ''
+    ) {
+      setMovies([]);
+    }
+  }, [location.pathname, location.search, inputValue]);
 
   const handleInput = e => {
     const value = e.target.value;
@@ -38,8 +38,7 @@ const MoviesPage = () => {
     }
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
+  const handleSearch = async () => {
     if (inputValue.trim() !== '') {
       setLoading(true);
       try {
@@ -73,42 +72,21 @@ const MoviesPage = () => {
   return (
     <div>
       <h1 className="movies-page-title">Movies search</h1>
-      <form className="search-form" onSubmit={handleSubmit}>
-        <label className="input-label" htmlFor="query">
-          <input
-            className="input-search"
-            type="text"
-            placeholder="Search movies"
-            name="query"
-            autoFocus
-            value={inputValue}
-            onChange={handleInput}
-            required
-          />
-        </label>
-        <button
-          className="search-btn btn"
-          type="submit"
-          disabled={searchBtnDisabled}
-        >
-          Search
-        </button>
-        <button
-          className="reset-btn btn"
-          type="button"
-          onClick={handleReset}
-          disabled={resetBtnDisabled}
-        >
-          Reset
-        </button>
-      </form>
+      <SearchForm
+        inputValue={inputValue}
+        onInput={handleInput}
+        onSearch={handleSearch}
+        onReset={handleReset}
+        searchBtnDisabled={searchBtnDisabled}
+        resetBtnDisabled={resetBtnDisabled}
+      />
       {loading && <p>Loading...</p>}
       {error && <p className="error-message massage">{error}</p>}
       {!loading && !error && movies.length === 0 && (
         <p className="no-results-message massage">No movies found.</p>
       )}
       {!loading && !error && movies.length > 0 && (
-        <ul className="movies-list">{MoviesList(movies)}</ul>
+        <MoviesList movies={movies} />
       )}
     </div>
   );

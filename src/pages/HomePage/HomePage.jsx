@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { getBestMoviesApi } from '../../api/moviesApi';
 import './HomePage.css';
-import MoviesList from 'components/MoviesList';
+import MoviesList from 'components/Movieslist';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
@@ -31,7 +30,7 @@ const HomePage = () => {
       <h1 className="movies-page-title">Popular Movies</h1>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-      <ul className="movies-list">{MoviesList(movies)}</ul>
+      <MoviesList movies={movies} />
     </div>
   );
 };

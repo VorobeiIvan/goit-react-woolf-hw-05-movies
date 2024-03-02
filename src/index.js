@@ -6,7 +6,7 @@ import 'modern-normalize/modern-normalize.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/goit-react-woolf-hw-05-movies">
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>

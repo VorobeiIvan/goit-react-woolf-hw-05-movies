@@ -39,8 +39,6 @@ const Cast = ({ movieId }) => {
               />
             )}
             {actor.name}
-            <p className="cast-character">as {actor.character}</p>
-            <p className="cast-character">as {actor.name}</p>
           </li>
         ))}
       </ul>
