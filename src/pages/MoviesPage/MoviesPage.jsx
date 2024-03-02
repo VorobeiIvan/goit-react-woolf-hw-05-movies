@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { getSearchMoviesApi } from '../../api/moviesApi';
 import './MoviesPage.css';
-import SearchForm from 'components/SearchForm';
-import MoviesList from 'components/Movieslist';
+import SearchForm from '../../components/SearchForm';
+import MoviesList from '../../components/Movieslist';
 
 const MoviesPage = () => {
   const [inputValue, setInputValue] = useState('');
