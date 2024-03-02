@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import SearchForm from '../../components/SearchForm/SearchForm';
 import MoviesList from '../../components/MoviesList';
 import { getSearchMoviesApi } from '../../api/moviesApi';
@@ -9,7 +9,6 @@ const MoviesPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -41,13 +40,22 @@ const MoviesPage = () => {
   };
 
   const handleSearch = query => {
-    navigate(`?query=${query}`);
+    const searchParams = new URLSearchParams();
+    searchParams.set('query', query);
+    window.history.pushState({}, '', `?${searchParams.toString()}`);
+    fetchMovies(query);
+  };
+
+  const handleReset = () => {
+    const searchParams = new URLSearchParams();
+    window.history.pushState({}, '', `?${searchParams.toString()}`);
+    window.location.reload();
   };
 
   return (
     <div className="movies-page">
       <h1 className="movies-page-title">Movies search</h1>
-      <SearchForm onSubmit={handleSearch} />
+      <SearchForm onSubmit={handleSearch} onReset={handleReset} />
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {!loading && !error && movies.length === 0 && (

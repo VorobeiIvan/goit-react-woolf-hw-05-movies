@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './SearchForm.css';
 
-const SearchForm = ({ onSubmit }) => {
+const SearchForm = ({ onSubmit, onReset }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [inputValue, setInputValue] = useState(searchParams.get('query') || '');
 
@@ -15,6 +15,7 @@ const SearchForm = ({ onSubmit }) => {
   const handleReset = () => {
     setInputValue('');
     setSearchParams({ query: '' });
+    onReset();
   };
 
   return (
@@ -27,10 +28,10 @@ const SearchForm = ({ onSubmit }) => {
         value={inputValue}
         onChange={e => setInputValue(e.target.value)}
       />
-      <button className="search-button" type="submit">
+      <button className="search-button btn" type="submit">
         Search
       </button>
-      <button className="reset-button" type="button" onClick={handleReset}>
+      <button className="reset-button btn" type="button" onClick={handleReset}>
         Reset
       </button>
     </form>
