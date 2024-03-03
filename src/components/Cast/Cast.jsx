@@ -37,16 +37,17 @@ const Cast = () => {
       <ul className="cast-list">
         {cast.map(actor => (
           <li className="cast-item" key={actor.id}>
-            {actor.profile_path && (
-              <img
-                className="cast-image"
-                src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
-                alt={actor.name}
-              />
-            )}
-            {!actor.profile_path && (
-              <img className="cast-image" src={defaultImg} alt={actor.name} />
-            )}
+            <img
+              className="movie-details-image"
+              src={
+                actor.profile_path
+                  ? `https://image.tmdb.org/t/p/w500/${actor.profile_path}`
+                  : defaultImg
+              }
+              width={250}
+              alt={actor.name}
+            />
+
             {actor.name}
           </li>
         ))}

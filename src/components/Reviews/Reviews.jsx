@@ -39,20 +39,16 @@ const Reviews = () => {
       <ul className="reviews-list">
         {reviews.map(review => (
           <li className="review-item" key={review.id}>
-            {review.author_details.avatar_path && (
-              <img
-                className="review-author-avatar"
-                src={`https://image.tmdb.org/t/p/w500${review.author_details.avatar_path}`}
-                alt={review.author}
-              />
-            )}
-            {!review.author_details.avatar_path && (
-              <img
-                className="review-author-avatar"
-                src={defaultImg}
-                alt={review.author}
-              />
-            )}
+            <img
+              className="movie-details-image"
+              src={
+                review.author_details.avatar_path
+                  ? `https://image.tmdb.org/t/p/w500/${review.author_details.avatar_path}`
+                  : defaultImg
+              }
+              width={250}
+              alt={review.author}
+            />
             {review.content}
             <p className="review-author">{review.author}</p>
             <p className="review-created-at">

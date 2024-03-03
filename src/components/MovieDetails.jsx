@@ -41,20 +41,17 @@ const MovieDetails = ({ handleGoBack }) => {
           <p className="movie-details-info">
             Overview: {movieDetails.overview}
           </p>
-          {movieDetails.poster_path && (
-            <img
-              className="movie-details-image"
-              src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
-              alt={movieDetails.title}
-            />
-          )}
-          {!movieDetails.poster_path && (
-            <img
-              className="movie-details-image"
-              src={defaultImg}
-              alt={movieDetails.title}
-            />
-          )}
+          <img
+            className="movie-details-image"
+            src={
+              movieDetails.poster_path
+                ? `https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`
+                : defaultImg
+            }
+            width={250}
+            alt={movieDetails.title}
+          />
+
           <p className="movie-details-info">
             Rating: {movieDetails.vote_average}
           </p>
