@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  useParams,
-  useLocation,
-  useNavigate,
-  Outlet,
-  Link,
-} from 'react-router-dom';
+import { useParams, useLocation, Outlet, Link } from 'react-router-dom';
 import { getMovieDetailsApi } from '../../api/moviesApi';
 import './MovieDetailsPage.css';
 import MovieDetails from '../../components/MovieDetails';
@@ -18,7 +12,6 @@ const MovieDetailsPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const location = useLocation();
-  const navigate = useNavigate();
   const [showCast, setShowCast] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
 
@@ -39,14 +32,6 @@ const MovieDetailsPage = () => {
     fetchMovieDetails();
   }, [movieId]);
 
-  const handleGoBack = () => {
-    if (location.state && location.state.from) {
-      navigate(location.state?.from || '/');
-    } else {
-      navigate(-1);
-    }
-  };
-
   const handleCastClick = () => {
     setShowCast(!showCast);
     setShowReviews(false);
@@ -59,9 +44,9 @@ const MovieDetailsPage = () => {
 
   return (
     <div className="movie-details-page">
-      <button className="go-back-button" onClick={handleGoBack}>
+      <Link className="go-back-button" to={location.state?.from ?? '/'}>
         Go Back
-      </button>
+      </Link>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {movieDetails && (
@@ -70,7 +55,6 @@ const MovieDetailsPage = () => {
             movieDetails={movieDetails}
             loading={loading}
             error={error}
-            handleGoBack={handleGoBack}
           />
           <Link className="cast-button" onClick={handleCastClick}>
             {showCast ? 'Hide Cast' : 'Show Cast'}
