@@ -3,8 +3,6 @@ import { useParams, useLocation, Outlet, Link } from 'react-router-dom';
 import { getMovieDetailsApi } from '../../api/moviesApi';
 import './MovieDetailsPage.css';
 import MovieDetails from '../../components/MovieDetails';
-import Cast from '../../components/Cast/Cast';
-import Reviews from '../../components/Reviews/Reviews';
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -56,14 +54,20 @@ const MovieDetailsPage = () => {
             loading={loading}
             error={error}
           />
-          <Link className="cast-button" onClick={handleCastClick}>
+          <Link
+            className="cast-button"
+            to={showCast ? '' : 'cast'}
+            onClick={handleCastClick}
+          >
             {showCast ? 'Hide Cast' : 'Show Cast'}
           </Link>
-          {showCast && <Cast movieId={movieId} />}
-          <Link className="reviews-button" onClick={handleReviewsClick}>
+          <Link
+            className="reviews-button"
+            to={showReviews ? '' : 'reviews'}
+            onClick={handleReviewsClick}
+          >
             {showReviews ? 'Hide Reviews' : 'Show Reviews'}
           </Link>
-          {showReviews && <Reviews movieId={movieId} />}
           <Outlet />
         </div>
       )}
